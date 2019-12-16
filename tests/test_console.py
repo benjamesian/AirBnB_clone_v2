@@ -126,12 +126,19 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("destroy BaseModel 12345")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
-        user_id = self.consol.onecmd('create User')
+    
+    def test_destroy2(self):
+        """Another destroy test"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd('destroy User {}'.format(user_id))
-            self.assertEqual('', f.getvalue())
-            self.consol.onecmd('destroy User {}'.format(user_id))
-            self.assertEqual('** no instance found **', f.getvalue())
+            self.consol.onecmd('create User')
+            user_id = f.getvalue()
+            print('hehe', user_id)
+            with patch('sys.stdout', new=StringIO()) as g:
+                self.consol.onecmd('destroy User {}'.format(user_id))
+                self.assertEqual('', g.getvalue())
+            with patch('sys.stdout', new=StringIO()) as g:
+                self.consol.onecmd('destroy User {}'.format(user_id))
+                self.assertEqual('** no instance found **\n', g.getvalue())
 
     def test_all(self):
         """Test all command inpout"""
