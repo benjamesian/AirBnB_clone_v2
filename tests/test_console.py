@@ -28,7 +28,7 @@ class TestConsole(unittest.TestCase):
         cls.consol = HBNBCommand()
 
     @classmethod
-    def teardown(cls):
+    def tearDownClass(cls):
         """at the end of the test this will tear it down"""
         del cls.consol
 
@@ -126,6 +126,12 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("destroy BaseModel 12345")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
+        user_id = self.consol.onecmd('create User')
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd('destroy User {}'.format(user_id))
+            self.assertEqual('', f.getvalue())
+            self.consol.onecmd('destroy User {}'.format(user_id))
+            self.assertEqual('** no instance found **', f.getvalue())
 
     def test_all(self):
         """Test all command inpout"""
