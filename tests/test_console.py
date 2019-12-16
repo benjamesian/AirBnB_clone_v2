@@ -126,7 +126,7 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("destroy BaseModel 12345")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
-    
+
     def test_destroy2(self):
         """Another destroy test"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -244,6 +244,7 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("User.update(" + my_id + ", name)")
             self.assertEqual(
                 "** value missing **\n", f.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
