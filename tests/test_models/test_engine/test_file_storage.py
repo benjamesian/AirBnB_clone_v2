@@ -14,6 +14,8 @@ from models.review import Review
 from models.engine.file_storage import FileStorage
 
 
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'file',
+                     "using db, so skip file tests")
 class TestFileStorage(unittest.TestCase):
     '''this will test the FileStorage'''
 
@@ -27,7 +29,7 @@ class TestFileStorage(unittest.TestCase):
         cls.storage = FileStorage()
 
     @classmethod
-    def teardown(cls):
+    def tearDownClass(cls):
         """at the end of the test this will tear it down"""
         del cls.user
 
