@@ -17,8 +17,7 @@ class BaseModel:
 
     id = Column(String(60), primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=self.created_at)
-
+    updated_at = Column(DateTime, default=created_at)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
