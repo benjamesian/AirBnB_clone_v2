@@ -47,14 +47,13 @@ class HBNBCommand(cmd.Cmd):
             for item in params:
                 key, value = item.split('=')
                 if len(value) >= 2 and value[0] is '"':
+                    value = value.replace("_", " ")
                     for n in range(len(value)):
                         if n > 0 and value[n] is '"':
                             if value[n-1] is not "\\":
                                 n = n + 1
                                 value = value[:n]
                                 break
-                        elif value[n] == "_":
-                            value[n] = " "
                     setattr(obj, key, value)
                 elif '.' in value:
                     setattr(obj, key, float(value))
