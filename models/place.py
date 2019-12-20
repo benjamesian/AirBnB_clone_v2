@@ -1,14 +1,16 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Table, MetaData, Column, String, Integer, Float, ForeignKey
+from sqlalchemy import (Table, MetaData,
+                        Column, String, Integer, Float, ForeignKey)
 
 
 metadata = Base.metadata
 place_amenity = Table('place_amenity', metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
                              nullable=False, primary_key=True),
-                      Column('amenity_id', String(60), ForeignKey('amenities.id'),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
                              nullable=False, primary_key=True))
 
 
