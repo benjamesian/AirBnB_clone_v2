@@ -54,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
                                 n = n + 1
                                 value = value[:n]
                                 break
-                    setattr(obj, key, value)
+                    setattr(obj, key, str(value[1:-1]))
                 elif '.' in value:
                     setattr(obj, key, float(value))
                 else:
