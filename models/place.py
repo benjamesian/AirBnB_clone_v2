@@ -6,8 +6,8 @@ from sqlalchemy import (relationship, Table, MetaData,
                         Column, String, Integer, Float, ForeignKey)
 import os
 
-metadata = Base.metadata
-place_amenity = Table('place_amenity', metadata,
+
+place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
                              nullable=False, primary_key=True),
                       Column('amenity_id', String(60),
@@ -44,7 +44,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        reviews = relationship('Review', backref='place',
+        reviews = relationship('Review', backref='places',
                               cascade='all, delete-orphan')
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'file':
