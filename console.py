@@ -42,22 +42,19 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            # params = dict(map(lambda x: x.split('='), my_list[1:]))
             params = my_list[1:]
-            print("params", params)
-            # print('fmtstring', "{}({})".format(my_list[0], kw if kw else ''))
-            obj = eval("{}".format(my_list[0]))()
+            obj = eval("{}()".format(my_list[0]))
             for item in params:
                 key, value = item.split('=')
-                if len(value) >= 2 and value[0] == value[-1] == '"':
-                    value = value[1:]
+                if len(value) >= 2 and value[0] is '"':
                     for n in range(len(value)):
-                        if value[n] == '"':
-                            value = value[:n]
-                        elif value[n] == "\\":
-                            n = n + 1
+                        if n > 0 and value[n] is '"':
+                            if value[n-1] is not "\\":
+                                n = n + 1
+                                value = value[:n]
+                                break
                         elif value[n] == "_":
-                            value[n] == " "
+                            value[n] = " "
                     setattr(obj, key, value)
                 elif '.' in value:
                     setattr(obj, key, float(value))

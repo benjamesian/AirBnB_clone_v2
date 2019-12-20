@@ -11,7 +11,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from models.engine.db import DB
+from models.engine.dbstorage import DBStorage
 
 
 class TestDB(unittest.TestCase):
@@ -24,10 +24,10 @@ class TestDB(unittest.TestCase):
         cls.user.first_name = "Kev"
         cls.user.last_name = "Yo"
         cls.user.email = "1234@yahoo.com"
-        cls.storage = FileStorage()
+        cls.storage = DBStorage()
 
     @classmethod
-    def teardown(cls):
+    def tearDownClass(cls):
         """at the end of the test this will tear it down"""
         del cls.user
 
