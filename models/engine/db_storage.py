@@ -13,6 +13,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 class DBStorage:
+    """Storage with SQL backend"""
     __engine = None
     __session = None
 
@@ -40,7 +41,8 @@ class DBStorage:
             q = self.__session.query(cls).all()
             print(q)
             return q
-        q = self.__session.query(User, State, City, Amenity, Place, Review).all()
+        q = self.__session\
+            .query(User, State, City, Amenity, Place, Review).all()
         print(q)
         return q
 
@@ -65,6 +67,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
+        """Reload instances from db"""
         Base.metadata.create_all(self.__engine)
         sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(sess)
