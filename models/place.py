@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This is the place class"""
-from models import storage, Review
+from models import storage, Amenity, Review
 from models.base_model import BaseModel, Base
 from sqlalchemy import (relationship, Table, MetaData,
                         Column, String, Integer, Float, ForeignKey)
@@ -45,7 +45,10 @@ class Place(BaseModel, Base):
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship('Review', backref='places',
-                              cascade='all, delete-orphan')
+                               cascade='all, delete-orphan')
+
+        amenities = relationship('Amenity', secondary='place_amenity',
+                                 back_populates='places', viewonly=False)
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'file':
         @property
@@ -55,3 +58,17 @@ class Place(BaseModel, Base):
                 if v.state_id == self.id:
                     obs[k] = v
             return obs
+
+        @property
+        def amenities(self):
+            obs = {}
+            for k, v in storage.all(Amenity).items():
+                if v.id in self.amenity_ids:
+                    obs[k] = v
+            return obs
+
+        @amenities.setter
+        def amenities(self, value):
+            if not isinstance(value, Amenity):
+                return
+            self.amenity_ids.append(value.id)
