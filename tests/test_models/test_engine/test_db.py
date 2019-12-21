@@ -11,7 +11,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from models.engine.dbstorage import DBStorage
+from models.engine.db_storage import DBStorage
 
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
@@ -22,16 +22,12 @@ class TestDBStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
-    conn = MySQLdb.connect(host="localhost", port=3306,
-                           user=sys.argv[1], passwd=sys.argv[2],
-                           db=sys.argv[3], charset="utf8")
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM states ORDER BY id ASC")
-    query_rows = cur.fetchall()
-    for row in query_rows:
-        print(row)
-    cur.close()
-    conn.close()
+        cls.connection = MySQLdb.connect(host=os.getenv('HBNB_MYSQL_HOST'),
+                               user=os.getenv('HBNB_MYSQL_USER'),
+                               passwd=os.getenv('HBNB_MYSQL_PWD'),
+                               db=os.getenv('HBNB_MYSQL_DB'),
+                               charset="utf8")
+
         cls.user = User()
         cls.user.first_name = "Kev"
         cls.user.last_name = "Yo"
@@ -42,15 +38,21 @@ class TestDBStorage(unittest.TestCase):
     def tearDownClass(cls):
         """at the end of the test this will tear it down"""
         del cls.user
+        cls.connection.close()
+
+    def setUp(self):
+        """set up"""
+        self.cursor = self.connection.cursor()
 
     def tearDown(self):
         """teardown"""
+        self.cursor.close()
         try:
             os.remove("file.json")
         except Exception:
             pass
 
-    def test_pep8_FileStorage(self):
+    def test_pep8_DBStorage(self):
         """Tests pep8 style"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/engine/file_storage.py'])
@@ -58,15 +60,20 @@ class TestDBStorage(unittest.TestCase):
 
     def test_all(self):
         """tests if all works in File Storage"""
-        storage = FileStorage()
+        self.cursor.execute("SELECT * FROM states ORDER BY id ASC")
+        query_rows = self.cursor.fetchall()
+        for row in query_rows:
+            print(row)
+
+        storage = DBStorage()
         obj = storage.all()
         self.assertIsNotNone(obj)
         self.assertEqual(type(obj), dict)
-        self.assertIs(obj, storage._FileStorage__objects)
+        self.assertIs(obj, storage._DBStorage__objects)
 
     def test_new(self):
         """test when new is created"""
-        storage = FileStorage()
+        storage = DBStorage()
         obj = storage.all()
         user = User()
         user.id = 123455
@@ -75,7 +82,11 @@ class TestDBStorage(unittest.TestCase):
         key = user.__class__.__name__ + "." + str(user.id)
         self.assertIsNotNone(obj[key])
 
-    def test_reload_filestorage(self):
+    def test_save(self):
+        """test saving items to the database"""
+        pass
+
+    def test_reload_DBStorage(self):
         """
         tests reload
         """

@@ -132,7 +132,6 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd('create User')
             user_id = f.getvalue()
-            print('hehe', user_id)
             with patch('sys.stdout', new=StringIO()) as g:
                 self.consol.onecmd('destroy User {}'.format(user_id))
                 self.assertEqual('', g.getvalue())

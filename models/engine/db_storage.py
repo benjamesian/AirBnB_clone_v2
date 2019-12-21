@@ -38,13 +38,9 @@ class DBStorage:
         """
         print(cls)
         if cls:
-            q = self.__session.query(cls).all()
-            print(q)
-            return q
-        q = self.__session\
+            return self.__session.query(cls).all()
+        return self.__session\
             .query(User, State, City, Amenity, Place, Review).all()
-        print(q)
-        return q
 
     def new(self, obj):
         """Adds the object to the current database session
