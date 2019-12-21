@@ -36,7 +36,6 @@ class DBStorage:
         Args:
             cls: given class
         """
-        print(cls)
         if cls:
             return self.__session.query(cls).all()
         return self.__session\
