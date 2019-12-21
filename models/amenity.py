@@ -1,11 +1,8 @@
 #!/usr/bin/python3
 """This is the amenity class"""
-import models
 from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from sqlalchemy import (Table, MetaData, Column, String, Integer, Float,
-                        ForeignKey)
-import os
 
 
 class Amenity(BaseModel, Base):

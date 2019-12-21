@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This is the place class"""
-from models import storage, Amenity, Review
+import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import (Table, MetaData,
                         Column, String, Integer, Float, ForeignKey)
@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             obs = {}
-            for k, v in storage.all(Review).items():
+            for k, v in models.storage.all(models.Review).items():
                 if v.state_id == self.id:
                     obs[k] = v
             return obs
@@ -63,13 +63,13 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             obs = {}
-            for k, v in storage.all(Amenity).items():
+            for k, v in models.storage.all(models.Amenity).items():
                 if v.id in self.amenity_ids:
                     obs[k] = v
             return obs
 
         @amenities.setter
         def amenities(self, value):
-            if not isinstance(value, Amenity):
+            if not isinstance(value, models.Amenity):
                 return
             self.amenity_ids.append(value.id)
