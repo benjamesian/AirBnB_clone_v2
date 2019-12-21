@@ -55,19 +55,15 @@ class Place(BaseModel, Base):
     if os.getenv('HBNB_TYPE_STORAGE') == 'file':
         @property
         def reviews(self):
-            obs = {}
-            for k, v in models.storage.all(models.Review).items():
-                if v.state_id == self.id:
-                    obs[k] = v
-            return obs
+            return list(filter(
+                lambda x: x.state_id == self.id,
+                models.storage.all(models.Review).values()))
 
         @property
         def amenities(self):
-            obs = {}
-            for k, v in models.storage.all(models.Amenity).items():
-                if v.id in self.amenity_ids:
-                    obs[k] = v
-            return obs
+            return list(filter(
+                lambda x: x.id in self.amenity_ids,
+                models.storage.all(models.Amenity).values()))
 
         @amenities.setter
         def amenities(self, value):
