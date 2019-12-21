@@ -14,7 +14,9 @@ from models.review import Review
 from models.engine.dbstorage import DBStorage
 
 
-class TestDB(unittest.TestCase):
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
+                 "using file, so skip db tests")
+class TestDBStorage(unittest.TestCase):
     '''this will test the Database Storage'''
 
     @classmethod
