@@ -2,8 +2,9 @@
 """This is the amenity class"""
 import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import (relationship, Table, MetaData,
-                        Column, String, Integer, Float, ForeignKey)
+from sqlalchemy.orm import relationship
+from sqlalchemy import (Table, MetaData, Column, String, Integer, Float,
+                        ForeignKey)
 import os
 
 
