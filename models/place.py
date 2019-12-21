@@ -45,11 +45,12 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        amenities = relationship('Amenity',
+                                 secondary='place_amenity',
+                                 back_populates='place_amenities',
+                                 viewonly=False)
         reviews = relationship('Review', backref='places',
                                cascade='all, delete-orphan')
-
-        amenities = relationship('Amenity', secondary='place_amenity',
-                                 back_populates='places', viewonly=False)
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'file':
         @property
