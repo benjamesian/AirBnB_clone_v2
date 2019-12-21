@@ -2,8 +2,7 @@
 """This is the place class"""
 import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import (Table, MetaData,
-                        Column, String, Integer, Float, ForeignKey)
+from sqlalchemy import Table, Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 import os
 
