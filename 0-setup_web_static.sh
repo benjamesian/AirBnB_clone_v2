@@ -5,9 +5,9 @@ apt-get -y install nginx
 ufw allow 'Nginx HTTP'
 mkdir -p /data/web_static/shared/
 mkdir -p /data/web_static/releases/test/
-chown -R "ubuntu:ubuntu" /data/
 echo "Hi Max" > /data/web_static/releases/test/index.html
 ln -sf /data/web_static/releases/test /data/web_static/current
+chown -R "ubuntu:ubuntu" /data/
 sed -i '1,/error.log;/!d' /etc/nginx/nginx.conf
 echo "
         server {
