@@ -4,6 +4,7 @@ from models import storage
 from models.state import State
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
@@ -11,8 +12,8 @@ def teardown_db(error):
     storage.close()
 
 
-@app.route('/states', strict_slashes=False)
-@app.route('/states/<id>', strict_slashes=False)
+@app.route('/states')
+@app.route('/states/<id>')
 def states(id=None):
     selected_states = storage.all(State)
     if id is not None:
@@ -21,4 +22,4 @@ def states(id=None):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5050, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
