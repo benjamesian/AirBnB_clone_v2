@@ -38,8 +38,10 @@ class DBStorage:
         """
         if cls:
             return self.__session.query(cls).all()
-        return self.__session\
-            .query(User, State, City, Amenity, Place, Review).all()
+        out = []
+        for model in (User, State, City, Place, Review):
+            out += self.__session.query(model).all()
+        return out
 
     def new(self, obj):
         """Adds the object to the current database session
@@ -66,3 +68,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(sess)
+
+    def close(self):
+        """Close connection to storage."""
+        self.__session.remove()

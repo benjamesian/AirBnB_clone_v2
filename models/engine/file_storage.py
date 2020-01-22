@@ -68,3 +68,7 @@ class FileStorage:
         for k, v in obs:
             if v is obj:
                 del self.__objects[k]
+
+    def close(self):
+        """Close connection to storage."""
+        self.reload()
