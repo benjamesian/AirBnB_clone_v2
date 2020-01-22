@@ -37,6 +37,15 @@ class DBStorage:
             cls: given class
         """
         if cls:
+            if isinstance(cls, str):
+                d = {
+                    'user' : User,
+                    'state': State,
+                    'city' : City,
+                    'place': Place,
+                    'review': Review
+                }
+                cls = d.get(cls.lower())
             return self.__session.query(cls).all()
         out = []
         for model in (User, State, City, Place, Review):
